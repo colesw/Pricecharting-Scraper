@@ -5,6 +5,7 @@ import os
 import concurrent.futures
 from videogame import VideoGame
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from bs4 import BeautifulSoup
 from datetime import datetime
 
@@ -54,7 +55,9 @@ def scrollBottom(console):
         (browser) html for webpage with all values loaded
     """
     SCROLL_PAUSE_TIME = 1
-    browser = webdriver.Firefox()
+    options = FirefoxOptions()
+    options.add_argument("--headless")
+    browser = webdriver.Firefox(options=options)
 
     browser.get('https://www.pricecharting.com/console/' + console)
     prevHeight = browser.execute_script("return document.body.scrollHeight")
