@@ -1,11 +1,17 @@
 class VideoGame:
-    def __init__(self, title, console, loosePrice, completePrice, newPrice):
+    def __init__(self, id, title, console, loosePrice, completePrice, newPrice):
+        self.id = id
         self.title = title
         self.console = console
         self.loosePrice = loosePrice
         self.completePrice = completePrice
         self.newPrice = newPrice
 
+    def getId(self):
+        return self.id
+    def setId(self, id):
+        self.id = id
+    
     def getTitle(self):
         return self.title
     def setTitle(self, title):
@@ -32,4 +38,4 @@ class VideoGame:
         self.newPrice = newPrice
 
     def printVals(self):
-        print ("Title: {}\nConsole: {}\nLoose: ${}\nComplete: ${}\nNew: ${}\n\n".format(self.title, self.console, self.loosePrice, self.completePrice, self.newPrice))
+        print ("Id: {}\nTitle: {}\nConsole: {}\nLoose: ${}\nComplete: ${}\nNew: ${}\n\n".format(self.id,self.title, self.console, self.loosePrice, self.completePrice, self.newPrice))
