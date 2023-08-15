@@ -36,11 +36,11 @@ def gameCsv(games):
     if not os.path.exists(dt):
         os.mkdir(dt)
     with open(os.path.join(dt, fn), 'w') as csv_file:
-        fieldnames = ['game', 'console', 'loose_val', 'complete_val', 'new_val', 'date(D/M/Y)']
+        fieldnames = ['id', 'game', 'console', 'loose_val', 'complete_val', 'new_val', 'date(D/M/Y)']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
         for g in games:
-            writer.writerow({'game': g.getTitle(), 'console': g.getConsole(), 'loose_val': g.getLoosePrice(), 'complete_val': g.getCompletePrice(),
+            writer.writerow({'id': g.getId(), 'game': g.getTitle(), 'console': g.getConsole(), 'loose_val': g.getLoosePrice(), 'complete_val': g.getCompletePrice(),
             'new_val': g.getNewPrice(), 'date(D/M/Y)': dt.split('_')[0].replace('.', '/')})
 
 
@@ -91,13 +91,14 @@ def scrapeVals(console, browser):
     soup = BeautifulSoup(browser.page_source, 'html.parser')
     for EachPart in soup.select('tr[id*="product-"]'):
         title = re.search(r'>(.*?)</a>', str(EachPart.select('td[class="title"]'))).group(1)
+        id = EachPart.select_one('td[class="title"]').get("title", "N/A")
         loosePrice = re.findall("\d+\.\d+", str(EachPart.select('td[class="price numeric used_price"]')))
         loosePrice = loosePrice[0] if len(loosePrice) > 0 else "N/A"
         completePrice = re.findall("\d+\.\d+", str(EachPart.select('td[class="price numeric cib_price"]')))
         completePrice = completePrice[0] if len(completePrice) > 0 else "N/A"
         newPrice = re.findall("\d+\.\d+", str(EachPart.select('td[class="price numeric new_price"]')))
         newPrice = newPrice[0] if len(newPrice) > 0 else "N/A"
-        newGame = VideoGame(title, console, loosePrice, completePrice, newPrice)
+        newGame = VideoGame(id, title, console, loosePrice, completePrice, newPrice)
         games.append(newGame)
     return games
 
